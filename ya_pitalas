@@ -1,0 +1,29 @@
+
+from flask import Flask
+from flask import request
+
+app = Flask(__name__)
+board = [['.','.','.'],['.','.','.'],['.','.','.']]
+
+player1 = 0
+player2 = 0
+@app.route('/start_game', methods=['GET', 'POST'])
+def start_game():
+    global board, player1, player2
+    board = [['.', '.', '.'], ['.', '.', '.'], ['.', '.', '.']]
+    player1 = 0
+    player2 = 0
+@app.route('/make_move', methods=['GET', 'POST'])
+def make_move():
+   global board, player1, player2
+   field=int(request.args.get('field'))
+   player=int(request.args.get('player'))
+   if player == 1:
+       board[(field-1)//3][(field-1)%3] = 'x'
+       player1 += 1
+   elif player == 2:
+       board[(field-1)//3][(field-1)%3] = 'o'
+       player2 +=1
+
+if __name__ == '__main__':
+    app.run(port=5001, debug=True)
